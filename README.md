@@ -1,4 +1,4 @@
-# PopHIVE Canada
+# PopHIVE Canada: Same great data, more maple flavor
 
 ## Using these data
 
