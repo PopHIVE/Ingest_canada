@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Bash(git checkout:*)",
+      "Bash(Rscript:*)",
+      "Bash(where:*)",
+      "Bash(\"/c/Program Files/R/R-4.4.1/bin/Rscript.exe\" ingest.R)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git rm:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr create --title \"Add ILINet to respiratory bundle\" --body \"$\\(cat <<''EOF''\n## Summary\n- Add `delphi_ili_fluview` weighted ILI percentage \\(`delphi_fluview_wili`\\) as a new flu indicator in the respiratory bundle\n- Simplify epiweek-to-date conversion in `delphi_ili_fluview/ingest.R` \\(use direct date addition instead of manual MMWR week calculation\\)\n- Clean up commented-out experimental code in `bundle_respiratory/build.R`\n- Rebuild bundle parquet outputs with updated flu trends\n\n## Test plan\n- [ ] Verify `flu_overall_trends.parquet` includes the new `delphi_fluview_wili` variable\n- [ ] Confirm ILINet data aligns temporally with other flu indicators\n- [ ] Check that existing COVID and RSV outputs are unaffected\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\nEOF\n\\)\")",
+      "Bash(zcat:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(python -c:*)",
+      "Bash(git cherry-pick:*)"
+    ]
+  }
+}
