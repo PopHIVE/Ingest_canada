@@ -1,4 +1,4 @@
-# PopHIVE Canada: Same great data, now maple derived
+# PopHIVE Canada: Same great data, with a cool northern chill
 
 ## Using these data
 
