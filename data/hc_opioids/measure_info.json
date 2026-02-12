@@ -1,17 +1,95 @@
 {
-  "example_variable": {
-    "id": "example_variable",
-    "short_name": "",
-    "long_name": "",
-    "category": "",
-    "short_description": "",
-    "long_description": "",
-    "statement": "",
-    "measure_type": "",
-    "unit": "",
-    "time_resolution": "",
-    "restrictions": "",
-    "sources": [],
-    "citations": []
+  "hc_op_deaths": {
+    "id": "hc_op_deaths",
+    "short_name": "Opioid toxicity deaths",
+    "long_name": "Apparent opioid toxicity deaths",
+    "category": "injury",
+    "short_description": "Quarterly count of apparent opioid toxicity deaths by province/territory.",
+    "long_description": "Number of apparent opioid toxicity deaths reported quarterly by Canadian provinces and territories to the Public Health Agency of Canada. Data covers all 10 provinces and 3 territories from 2016 onward. Some jurisdictions may report preliminary counts for recent quarters. Small counts may be suppressed for privacy.",
+    "statement": "In {location}, there were {hc_op_deaths} apparent opioid toxicity deaths.",
+    "measure_type": "Count",
+    "unit": "Deaths",
+    "time_resolution": "Quarter",
+    "sources": [{ "id": "health_infobase_opioids" }],
+    "citations": [
+      {
+        "title": "Opioid- and Stimulant-related Harms in Canada",
+        "url": "https://health-infobase.canada.ca/substance-related-harms/opioids-stimulants/"
+      }
+    ]
+  },
+
+  "hc_op_hosp": {
+    "id": "hc_op_hosp",
+    "short_name": "Opioid poisoning hospitalizations",
+    "long_name": "Opioid-related poisoning hospitalizations",
+    "category": "injury",
+    "short_description": "Quarterly count of opioid-related poisoning hospitalizations by province/territory.",
+    "long_description": "Number of hospitalizations for opioid-related poisoning reported quarterly by Canadian provinces and territories to the Public Health Agency of Canada. Includes admissions to acute care facilities with a diagnosis of opioid poisoning. Coverage varies by province and recent quarters may be preliminary.",
+    "statement": "In {location}, there were {hc_op_hosp} opioid-related poisoning hospitalizations.",
+    "measure_type": "Count",
+    "unit": "Hospitalizations",
+    "time_resolution": "Quarter",
+    "sources": [{ "id": "health_infobase_opioids" }],
+    "citations": [
+      {
+        "title": "Opioid- and Stimulant-related Harms in Canada",
+        "url": "https://health-infobase.canada.ca/substance-related-harms/opioids-stimulants/"
+      }
+    ]
+  },
+
+  "hc_op_ed": {
+    "id": "hc_op_ed",
+    "short_name": "Opioid poisoning ED visits",
+    "long_name": "Opioid-related poisoning emergency department visits",
+    "category": "injury",
+    "short_description": "Quarterly count of opioid-related poisoning emergency department visits by province/territory.",
+    "long_description": "Number of emergency department visits for opioid-related poisoning reported quarterly by participating Canadian provinces and territories. Coverage is limited to jurisdictions with ED surveillance systems reporting to the Public Health Agency of Canada. Recent quarters may be preliminary.",
+    "statement": "In {location}, there were {hc_op_ed} opioid-related poisoning emergency department visits.",
+    "measure_type": "Count",
+    "unit": "ED visits",
+    "time_resolution": "Quarter",
+    "sources": [{ "id": "health_infobase_opioids" }],
+    "citations": [
+      {
+        "title": "Opioid- and Stimulant-related Harms in Canada",
+        "url": "https://health-infobase.canada.ca/substance-related-harms/opioids-stimulants/"
+      }
+    ]
+  },
+
+  "hc_op_ems": {
+    "id": "hc_op_ems",
+    "short_name": "Opioid overdose EMS responses",
+    "long_name": "Suspected opioid-related overdose EMS responses",
+    "category": "injury",
+    "short_description": "Quarterly count of suspected opioid-related overdose EMS responses by province/territory.",
+    "long_description": "Number of emergency medical services (EMS) responses to suspected opioid-related overdoses reported quarterly by participating Canadian provinces and territories. Coverage is limited to jurisdictions with EMS surveillance systems reporting to the Public Health Agency of Canada. Sub-provincial regions (e.g., Winnipeg, Whitehorse, Yellowknife) are excluded from the standardized output; only province/territory-level and national totals are included. Recent quarters may be preliminary.",
+    "statement": "In {location}, there were {hc_op_ems} suspected opioid-related overdose EMS responses.",
+    "measure_type": "Count",
+    "unit": "EMS responses",
+    "time_resolution": "Quarter",
+    "sources": [{ "id": "health_infobase_opioids" }],
+    "citations": [
+      {
+        "title": "Opioid- and Stimulant-related Harms in Canada",
+        "url": "https://health-infobase.canada.ca/substance-related-harms/opioids-stimulants/"
+      }
+    ]
+  },
+
+  "_sources": {
+    "health_infobase_opioids": {
+      "name": "Health Infobase Canada - Opioid- and Stimulant-related Harms",
+      "url": "https://health-infobase.canada.ca/substance-related-harms/opioids-stimulants/",
+      "organization": "Public Health Agency of Canada",
+      "organization_url": "https://www.canada.ca/en/public-health.html",
+      "location": "Opioids API",
+      "location_url": "https://health-infobase.canada.ca/api/opioids",
+      "description": "National surveillance data on opioid- and stimulant-related harms in Canada, compiled by the Public Health Agency of Canada (PHAC) from provincial and territorial reports. Includes four outcome measures: apparent opioid toxicity deaths, opioid-related poisoning hospitalizations, opioid-related emergency department visits, and suspected opioid-related overdose EMS responses. Data is reported quarterly from 2016 onward. Geographic coverage varies by outcome measure, and recent quarters may contain preliminary data subject to revision.",
+      "restrictions": "Open Government Licence - Canada. Data may be freely reused with attribution to the Public Health Agency of Canada.",
+      "date_accessed": 2025
+    }
   }
 }
