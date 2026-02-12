@@ -22,13 +22,13 @@ STANDARD_VARS <- list(
 
 geography = list(
     short_name = "Geography",
-    description = "FIPS code identifier (00 = national, 2-digit = state, 5-digit = county)",
+    description = "SGC code identifier (00 = national/Canada, 2-digit = province/territory)",
     measure_type = "identifier",
-    unit = "FIPS code"
+    unit = "SGC code"
   ),
   time = list(
     short_name = "Time",
-    description = "Date in MM-DD-YYYY format (Saturday for weekly data)",
+    description = "Date in YYYY-mm-dd format (ISO 8601; Saturday for weekly data)",
     measure_type = "date",
     unit = "date"
   ),
@@ -44,21 +44,9 @@ geography = list(
     measure_type = "category",
     unit = ""
   ),
-  race_ethnicity = list(
-    short_name = "Race/Ethnicity",
-    description = "Race/ethnicity category",
-    measure_type = "category",
-    unit = ""
-  ),
   virus = list(
     short_name = "Virus",
     description = "Pathogen type (rsv, influenza, covid)",
-    measure_type = "category",
-    unit = ""
-  ),
-  grade = list(
-    short_name = "Grade",
-    description = "School grade level",
     measure_type = "category",
     unit = ""
   ),
@@ -71,12 +59,6 @@ geography = list(
   serotype = list(
     short_name = "Serotype",
     description = "Disease serotype/variant",
-    measure_type = "category",
-    unit = ""
-  ),
-  survey_type = list(
-    short_name = "Survey Type",
-    description = "Type of survey conducted",
     measure_type = "category",
     unit = ""
   )
@@ -246,21 +228,17 @@ format_source_name <- function(name) {
   # Convert underscores to spaces and title case
   name <- gsub("_", " ", name)
   name <- tools::toTitleCase(name)
-  # Handle special cases
-  name <- gsub("Cdc", "CDC", name)
-  name <- gsub("Jhu", "JHU", name)
-  name <- gsub("Mmr", "MMR", name)
-  name <- gsub("Cms", "CMS", name)
-  name <- gsub("Nssp", "NSSP", name)
-  name <- gsub("Nis", "NIS", name)
-  name <- gsub("Nrevss", "NREVSS", name)
-  name <- gsub("Nchs", "NCHS", name)
-  name <- gsub("Brfss", "BRFSS", name)
-  name <- gsub("Vaers", "VAERS", name)
-  name <- gsub("Amr", "AMR", name)
-  name <- gsub("Ili", "ILI", name)
-  name <- gsub("Nhsn", "NHSN", name)
-  name <- gsub("Nnds", "NNDS", name)
+  # Handle special cases (Canadian agencies and acronyms)
+  name <- gsub("\\bHc\\b", "HC", name)
+  name <- gsub("\\bPhac\\b", "PHAC", name)
+  name <- gsub("\\bCihi\\b", "CIHI", name)
+  name <- gsub("\\bStatcan\\b", "StatCan", name)
+  name <- gsub("\\bNml\\b", "NML", name)
+  name <- gsub("\\bWw\\b", "WW", name)
+  name <- gsub("\\bAmr\\b", "AMR", name)
+  name <- gsub("\\bIli\\b", "ILI", name)
+  name <- gsub("\\bMmr\\b", "MMR", name)
+  name <- gsub("\\bSgc\\b", "SGC", name)
   return(name)
 }
 
@@ -488,7 +466,7 @@ html_page <- tags$html(lang = "en",
   tags$head(
     tags$meta(charset = "UTF-8"),
     tags$meta(name = "viewport", content = "width=device-width, initial-scale=1"),
-    tags$title("PopHIVE Data Source Documentation"),
+    tags$title("PopHIVE Canada Data Source Documentation"),
     tags$link(
       href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css",
       rel = "stylesheet"
@@ -507,7 +485,7 @@ html_page <- tags$html(lang = "en",
     # Fixed navbar
     tags$nav(class = "navbar navbar-dark fixed-top",
       tags$div(class = "container-fluid",
-        tags$a(class = "navbar-brand", href = "#", "PopHIVE Data Documentation"),
+        tags$a(class = "navbar-brand", href = "#", "PopHIVE Canada Data Documentation"),
         tags$span(class = "navbar-text text-light",
           sprintf("Last updated: %s", format(Sys.Date(), "%B %d, %Y"))
         )
@@ -529,9 +507,9 @@ html_page <- tags$html(lang = "en",
         # Main content
         tags$main(class = "col-md-9 ms-sm-auto col-lg-10 px-md-4",
           tags$div(class = "pt-3",
-            tags$h1("PopHIVE Data Source Documentation"),
+            tags$h1("PopHIVE Canada Data Source Documentation"),
             tags$p(class = "lead text-muted",
-              "This page documents all data sources in the PopHIVE/Ingest repository, ",
+              "This page documents all Canadian data sources in the PopHIVE/ingest_canada repository, ",
               "including variable definitions, data types, and source information."
             ),
             tags$hr(),

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>PopHIVE Canada Data Source Documentation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+      body { padding-top: 60px; }
+      .navbar { background-color: #2c3e50; }
+      .nav-pills .nav-link { color: #495057; padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+      .nav-pills .nav-link:hover { background-color: #e9ecef; }
+      section { scroll-margin-top: 70px; }
+      code { background-color: #f8f9fa; padding: 0.125rem 0.25rem; border-radius: 0.25rem; }
+      .table th { background-color: #f8f9fa; }
+    </style>
+</head>
+<html lang="en">
+  <body>
+    <nav class="navbar navbar-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">PopHIVE Canada Data Documentation</a>
+        <span class="navbar-text text-light">Last updated: February 12, 2026</span>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" style="position: fixed; top: 56px; bottom: 0; overflow-y: auto; padding-top: 1rem;">
+          <div class="position-sticky">
+            <h6 class="sidebar-heading px-3 mt-1 mb-1 text-muted">Data Sources</h6>
+            <ul class="nav flex-column nav-pills">
+              <li class="nav-item">
+                <a class="nav-link" href="#hc-opioids">HC Opioids</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#wastewater">Wastewater</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <div class="pt-3">
+            <h1>PopHIVE Canada Data Source Documentation</h1>
+            <p class="lead text-muted">
+              This page documents all Canadian data sources in the PopHIVE/ingest_canada repository, 
+              including variable definitions, data types, and source information.
+            </p>
+            <hr/>
+            <section id="hc-opioids" class="mb-5">
+              <h2 class="border-bottom pb-2">HC Opioids</h2>
+              <p class="text-muted">No standard data files found.</p>
+            </section>
+            <section id="wastewater" class="mb-5">
+              <h2 class="border-bottom pb-2">Wastewater</h2>
+              <p class="lead">The Canadian COVID-19 Wastewater Surveillance Program monitors viral signals in wastewater from treatment plants across Canada. The program tracks SARS-CoV-2 (N2 gene), Influenza A, Influenza B, and RSV. Data is collected from multiple monitoring sites and aggregated at site, provincial, and national levels on a weekly basis. The weighted average (w_avg) represents the population-weighted mean viral signal across sites within each geographic area.</p>
+              <h5>Sources</h5>
+              <ul class="list-unstyled">
+                <li>
+                  <a href="https://health-infobase.canada.ca/wastewater/" target="_blank">Data Source</a>
+                   | 
+                  <a href="https://www.canada.ca/en/public-health.html" target="_blank">Public Health Agency of Canada</a>
+                   | 
+                  <a href="https://health-infobase.canada.ca/api/" target="_blank">API/Data Location</a>
+                </li>
+              </ul>
+              <div class="alert alert-warning">
+                <strong>Restrictions: </strong>
+                Open Government Licence - Canada. Data may be freely reused with attribution to the Public Health Agency of Canada.
+              </div>
+              <h4 class="mt-4">Variables</h4>
+              <h5 class="mt-3">
+                <code>data.csv.gz</code>
+              </h5>
+              <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                  <thead>
+                    <tr>
+                      <th>Variable</th>
+                      <th>Short Name</th>
+                      <th>Description</th>
+                      <th>Type</th>
+                      <th>Unit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <code>geography</code>
+                      </td>
+                      <td>Geography</td>
+                      <td>SGC code identifier (00 = national/Canada, 2-digit = province/territory)</td>
+                      <td>identifier</td>
+                      <td>SGC code</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>time</code>
+                      </td>
+                      <td>Time</td>
+                      <td>Date in YYYY-mm-dd format (ISO 8601; Saturday for weekly data)</td>
+                      <td>date</td>
+                      <td>date</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>virus</code>
+                      </td>
+                      <td>Virus</td>
+                      <td>Pathogen type (rsv, influenza, covid)</td>
+                      <td>category</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_ww_value</code>
+                      </td>
+                      <td>hc_ww_value</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_ww_value_min</code>
+                      </td>
+                      <td>hc_ww_value_min</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_ww_value_max</code>
+                      </td>
+                      <td>hc_ww_value_max</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_ww_location_name</code>
+                      </td>
+                      <td>hc_ww_location_name</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_ww_epi_year</code>
+                      </td>
+                      <td>hc_ww_epi_year</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_ww_epi_week</code>
+                      </td>
+                      <td>hc_ww_epi_week</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+</html>
