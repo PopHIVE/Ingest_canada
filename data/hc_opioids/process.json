@@ -16,5 +16,8 @@
   ],
   "checked": "",
   "check_results": [],
-  "standalone": false
+  "standalone": false,
+  "raw_state": {
+    "hash": "afd0890a58e127b4c1006305140c211e"
+  }
 }
