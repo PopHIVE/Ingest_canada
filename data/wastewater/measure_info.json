@@ -1,0 +1,95 @@
+{
+  "hc_ww_covid": {
+    "id": "hc_ww_covid",
+    "short_name": "Wastewater SARS-CoV-2 signal",
+    "long_name": "Wastewater SARS-CoV-2 (N2 gene) viral activity level",
+    "category": "respiratory",
+    "short_description": "Weekly weighted average SARS-CoV-2 (N2 gene) signal detected in wastewater across Canadian monitoring sites.",
+    "long_description": "SARS-CoV-2 viral RNA concentrations (normalized copies per mL) detected at wastewater treatment plants across Canada, targeting the N2 gene. Data is aggregated weekly at the provincial and national level as a population-weighted mean across monitoring sites.",
+    "statement": "In {location}, the wastewater COVID-19 signal was {hc_ww_covid}.",
+    "measure_type": "Rate",
+    "unit": "Normalized copies/mL (weighted average)",
+    "time_resolution": "Week",
+    "sources": [{ "id": "health_infobase_wastewater" }],
+    "citations": [
+      {
+        "title": "COVID-19 wastewater surveillance in Canada",
+        "url": "https://health-infobase.canada.ca/wastewater/"
+      }
+    ]
+  },
+
+  "hc_ww_flu_a": {
+    "id": "hc_ww_flu_a",
+    "short_name": "Wastewater Influenza A signal",
+    "long_name": "Wastewater Influenza A viral activity level",
+    "category": "respiratory",
+    "short_description": "Weekly weighted average Influenza A signal detected in wastewater across Canadian monitoring sites.",
+    "long_description": "Influenza A viral RNA concentrations (normalized copies per mL) detected at wastewater treatment plants across Canada. Data is aggregated weekly at the provincial and national level as a population-weighted mean across monitoring sites.",
+    "statement": "In {location}, the wastewater Influenza A signal was {hc_ww_flu_a}.",
+    "measure_type": "Rate",
+    "unit": "Normalized copies/mL (weighted average)",
+    "time_resolution": "Week",
+    "sources": [{ "id": "health_infobase_wastewater" }],
+    "citations": [
+      {
+        "title": "COVID-19 wastewater surveillance in Canada",
+        "url": "https://health-infobase.canada.ca/wastewater/"
+      }
+    ]
+  },
+
+  "hc_ww_flu_b": {
+    "id": "hc_ww_flu_b",
+    "short_name": "Wastewater Influenza B signal",
+    "long_name": "Wastewater Influenza B viral activity level",
+    "category": "respiratory",
+    "short_description": "Weekly weighted average Influenza B signal detected in wastewater across Canadian monitoring sites.",
+    "long_description": "Influenza B viral RNA concentrations (normalized copies per mL) detected at wastewater treatment plants across Canada. Data is aggregated weekly at the provincial and national level as a population-weighted mean across monitoring sites.",
+    "statement": "In {location}, the wastewater Influenza B signal was {hc_ww_flu_b}.",
+    "measure_type": "Rate",
+    "unit": "Normalized copies/mL (weighted average)",
+    "time_resolution": "Week",
+    "sources": [{ "id": "health_infobase_wastewater" }],
+    "citations": [
+      {
+        "title": "COVID-19 wastewater surveillance in Canada",
+        "url": "https://health-infobase.canada.ca/wastewater/"
+      }
+    ]
+  },
+
+  "hc_ww_rsv": {
+    "id": "hc_ww_rsv",
+    "short_name": "Wastewater RSV signal",
+    "long_name": "Wastewater RSV viral activity level",
+    "category": "respiratory",
+    "short_description": "Weekly weighted average RSV signal detected in wastewater across Canadian monitoring sites.",
+    "long_description": "RSV viral RNA concentrations (normalized copies per mL) detected at wastewater treatment plants across Canada. Data is aggregated weekly at the provincial and national level as a population-weighted mean across monitoring sites.",
+    "statement": "In {location}, the wastewater RSV signal was {hc_ww_rsv}.",
+    "measure_type": "Rate",
+    "unit": "Normalized copies/mL (weighted average)",
+    "time_resolution": "Week",
+    "sources": [{ "id": "health_infobase_wastewater" }],
+    "citations": [
+      {
+        "title": "COVID-19 wastewater surveillance in Canada",
+        "url": "https://health-infobase.canada.ca/wastewater/"
+      }
+    ]
+  },
+
+  "_sources": {
+    "health_infobase_wastewater": {
+      "name": "Health Infobase Canada - Wastewater Surveillance",
+      "url": "https://health-infobase.canada.ca/wastewater/",
+      "organization": "Public Health Agency of Canada",
+      "organization_url": "https://www.canada.ca/en/public-health.html",
+      "location": "Wastewater API",
+      "location_url": "https://health-infobase.canada.ca/api/",
+      "description": "The Canadian COVID-19 Wastewater Surveillance Program monitors viral signals in wastewater from treatment plants across Canada. The program tracks SARS-CoV-2 (N2 gene), Influenza A, Influenza B, and RSV. Data is collected from multiple monitoring sites and aggregated at site, provincial, and national levels on a weekly basis. The weighted average (w_avg) represents the population-weighted mean viral signal across sites within each geographic area.",
+      "restrictions": "Open Government Licence - Canada. Data may be freely reused with attribution to the Public Health Agency of Canada.",
+      "date_accessed": 2025
+    }
+  }
+}

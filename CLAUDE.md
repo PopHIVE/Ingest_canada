@@ -18,7 +18,7 @@ All standardized output files must conform to these column specifications:
 
 | Column | Description | Format | Examples |
 |--------|-------------|--------|----------|
-| `geography` | Geographic identifier | FIPS code string | `"00"` (national), `"06"` (California), `"06037"` (LA County) |
+| `geography` | Geographic identifier | SGC code string | `"00"` (national/Canada), `"35"` (Ontario), `"24"` (Quebec) |
 | `time` | Time period end date | `YYYY-mm-dd` | `"2025-01-04"` (Saturday for weekly data) |
 
 ### Common Optional Columns
@@ -26,82 +26,108 @@ All standardized output files must conform to these column specifications:
 | Column | Description | Values |
 |--------|-------------|--------|
 | `age` | Age group | `"0-4"`, `"5-17"`, `"18-49"`, `"50-64"`, `"65+"`, `"Overall"` |
-| `race_ethnicity` | Race/ethnicity category | `"White"`, `"Black"`, `"Hispanic"`, `"Asian"`, `"Overall"` |
 | `sex` | Sex category | `"Male"`, `"Female"`, `"Overall"` |
-| `virus` | Pathogen (respiratory data) | `"rsv"`, `"influenza"`, `"covid"` |
+
+**Note**: Categorical dimensions like virus type should NOT be stored as a column. Instead, pivot to wide format with one value column per category (see "Wide Format" section below).
+
+### Value Column Naming Convention: Data-Specific Prefixes
+
+**CRITICAL**: All value/measure columns in standardized output files MUST use a data-source-specific prefix to avoid naming collisions when datasets are combined in bundles. The prefix should be a short, descriptive abbreviation of the data source.
+
+| Prefix | Source | Example Columns |
+|--------|--------|----------------|
+| `hc_ww_` | Health Canada Wastewater | `hc_ww_covid`, `hc_ww_flu_a`, `hc_ww_rsv`, `hc_ww_covid_min` |
+| `hc_op_` | Health Canada Opioids | `hc_op_value`, `hc_op_rate` |
+
+**Rules**:
+- Standard shared columns (`geography`, `time`, `age`, `sex`, etc.) do NOT get prefixed
+- Only value/measure columns and source-specific metadata columns get the prefix
+- The prefix format is: `{org}_{topic}_` (e.g., `hc_ww_` = Health Canada Wastewater)
+- All prefixed columns must be documented in `measure_info.json` with the prefixed name as the variable ID
+
+### Wide Format: Categorical Dimensions as Columns
+
+**CRITICAL**: When source data has a categorical dimension (e.g., virus type, age group) with associated values, the standard file MUST be pivoted to **wide format** with one column per category, NOT stored as a long-format `virus`/`age` column with a generic `value` column.
+
+**Why**: Wide format makes each measure a distinct, self-documenting column that maps directly to a `measure_info.json` entry. It avoids ambiguity when bundling datasets and makes downstream joins simpler.
+
+**Example**: Wastewater data with 4 viruses becomes:
+```
+geography, time, hc_ww_covid, hc_ww_flu_a, hc_ww_flu_b, hc_ww_rsv, hc_ww_covid_min, ...
+```
+NOT:
+```
+geography, time, virus, hc_ww_value, hc_ww_value_min, ...
+```
+
+Use `tidyr::pivot_wider()` in the ingest script to reshape, and create one `measure_info.json` entry per resulting column.
 
 ### Value Columns
 
 | Column | Description |
 |--------|-------------|
-| `value` | Primary measure (closest to source data) |
-| `value_smooth` | 3-week moving average |
-| `value_smooth_scale` | Smoothed value scaled 0-100 |
+| `{prefix}{measure}` | Primary measure (closest to source data) |
+| `{prefix}{measure}_smooth` | 3-week moving average |
+| `{prefix}{measure}_smooth_scale` | Smoothed value scaled 0-100 |
+| `{prefix}{measure}_min` | Minimum value (e.g., across sites) |
+| `{prefix}{measure}_max` | Maximum value (e.g., across sites) |
 | `suppressed_flag` | `1` if value was suppressed and imputed, `0` otherwise |
 
-### Geography Standards
+### Geography Standards (Canada)
 
-- **National**: Use `"00"` (not `"US"` or `"0"`)
-- **State**: 2-digit FIPS code as string (`"06"` not `6`)
-- **County**: 5-digit FIPS code as string (`"06037"`)
-- **PREFERRED**: Convert state/county names to FIPS codes using merge with `resources/all_fips.csv.gz` (much faster than `cdlTools::fips()`)
+This repository uses Statistics Canada's Standard Geographical Classification (SGC) codes:
 
-#### all_fips.csv.gz Structure
+- **National**: Use `"00"` (not `"CA"` or `"0"`)
+- **Province/Territory**: 2-digit SGC code as string (`"35"` for Ontario, not `35`)
+- **PREFERRED**: Convert province names to SGC codes using merge with `resources/all_geo.csv.gz`
+
+#### all_geo.csv.gz Structure
 
 The file contains three columns:
 | Column | Description | Examples |
 |--------|-------------|----------|
-| `geography` | FIPS code | `"06"` (state), `"06037"` (county), `"00"` (national) |
-| `geography_name` | Full name | `"California"`, `"Los Angeles County"`, `"United States"` |
-| `state` | State abbreviation | `"CA"`, `"US"` |
+| `geography` | SGC code | `"35"` (Ontario), `"24"` (Quebec), `"00"` (national) |
+| `geography_name` | Full name | `"Ontario"`, `"Quebec"`, `"Canada"` |
+| `province_abbr` | Province abbreviation | `"ON"`, `"QC"`, `"CA"` |
 
-**Important notes:**
-- County names include their suffix (e.g., "Los Angeles County", "Orleans Parish", "Anchorage Municipality")
-- State-level entries have 2-digit FIPS codes; county-level have 5-digit codes
-- National entry uses `"00"` for geography and `"United States"` for geography_name
+#### Complete SGC Province/Territory Codes
 
-#### State-level FIPS lookup
+| Code | Province/Territory | Abbr |
+|------|-------------------|------|
+| `00` | Canada (national) | CA |
+| `10` | Newfoundland and Labrador | NL |
+| `11` | Prince Edward Island | PE |
+| `12` | Nova Scotia | NS |
+| `13` | New Brunswick | NB |
+| `24` | Quebec | QC |
+| `35` | Ontario | ON |
+| `46` | Manitoba | MB |
+| `47` | Saskatchewan | SK |
+| `48` | Alberta | AB |
+| `59` | British Columbia | BC |
+| `60` | Yukon | YT |
+| `61` | Northwest Territories | NT |
+| `62` | Nunavut | NU |
+
+#### Province-level geography lookup
   ```r
-  # Load FIPS crosswalk (do this once per script)
-  all_fips <- vroom::vroom("../../resources/all_fips.csv.gz", show_col_types = FALSE)
+  # Load geography crosswalk (do this once per script)
+  all_geo <- read.csv(gzfile("../../resources/all_geo.csv.gz"), colClasses = "character")
 
-  # For state abbreviations (e.g., "CA", "TX"):
-  state_fips_lookup <- all_fips %>%
-    filter(nchar(geography) == 2) %>%
-    select(geography, state)
+  # For province abbreviations (e.g., "ON", "QC"):
+  province_lookup <- all_geo %>%
+    filter(geography != "00") %>%
+    select(geography, province_abbr)
 
-  # For full state names (e.g., "California", "Texas"):
-  state_fips_lookup <- all_fips %>%
-    filter(nchar(geography) == 2) %>%
+  # For full province names (e.g., "Ontario", "Quebec"):
+  province_lookup <- all_geo %>%
+    filter(geography != "00") %>%
     select(geography, geography_name)
 
-  # Merge to get FIPS codes
+  # Merge to get SGC codes
   data <- data %>%
-    left_join(state_fips_lookup, by = c("state_column" = "state"))
+    left_join(province_lookup, by = c("province" = "geography_name"))
   ```
-
-#### County-level FIPS lookup
-  ```r
-  # County names in all_fips include suffixes that must be handled
-  county_fips_lookup <- all_fips %>%
-    filter(nchar(geography) == 5) %>%
-    select(geography, geography_name, state) %>%
-    mutate(
-      # Strip common suffixes to match raw data formats
-      county_name = sub(" County$", "", geography_name),
-      county_name = sub(" Parish$", "", county_name),      # Louisiana
-      county_name = sub(" Borough$", "", county_name),     # Alaska
-      county_name = sub(" Census Area$", "", county_name), # Alaska
-      county_name = sub(" Municipality$", "", county_name), # Alaska
-      state_fips = substr(geography, 1, 2)
-    )
-
-  # Merge using both state and county name to avoid ambiguity
-  data <- data %>%
-    left_join(county_fips_lookup, by = c("state_fips", "county_name"))
-  ```
-
-- **Alternative**: Use `cdlTools::fips(state, to='FIPS')` only if merge approach is not feasible (note: this is very slow)
 
 ### Time Standards
 
@@ -115,14 +141,12 @@ The file contains three columns:
 ## Directory Structure
 
 ```
-PopHIVE/Ingest/
+PopHIVE/ingest_canada/
 ├── data/
 │   ├── {source_name}/           # Individual data source
 │   │   ├── raw/                 # Downloaded source files (compressed)
 │   │   ├── standard/            # Standardized output files
-│   │   │   ├── data.csv.gz      # Main standardized file
-│   │   │   ├── data_state.csv.gz    # State-level (if separate)
-│   │   │   └── data_county.csv.gz   # County-level (if separate)
+│   │   │   └── data.csv.gz      # Main standardized file
 │   │   ├── ingest.R             # Transformation script (SINGLE FILE PER SOURCE)
 │   │   ├── measure_info.json    # Variable metadata
 │   │   └── process.json         # Processing state (auto-generated)
@@ -133,17 +157,12 @@ PopHIVE/Ingest/
 │   │   └── dist/                # Final outputs for visualization
 │   │       └── *.parquet        # Parquet format only (no CSV)
 │   │
-│   ├── epic/                    # Epic Cosmos data
-│   ├── gtrends/                 # Google Health Trends
-│   ├── wastewater/              # CDC NWSS
-│   ├── nssp/                    # CDC NSSP ED visits
-│   ├── respnet/                 # CDC RESP-NET hospitalizations
-│   ├── abcs/                    # CDC ABCs pneumococcal
-│   ├── NREVSS/                  # CDC lab testing
-│   └── nis/                     # National Immunization Survey
+│   ├── wastewater/              # Health Canada wastewater surveillance (hc_ww_)
+│   └── hc_opioids/              # Health Canada opioid data (hc_op_)
 │
 ├── scripts/                     # Utility scripts
-├── resources/                   # Reference files (FIPS codes, etc.)
+├── resources/                   # Reference files (SGC codes, etc.)
+│   └── all_geo.csv.gz           # Province/territory SGC code crosswalk
 ├── settings.json               # Project configuration
 ├── file_log.json               # File tracking
 └── renv.lock                   # R package versions
@@ -242,6 +261,7 @@ if (!identical(process$wapo_state, current_wapo_state)) {
 # =============================================================================
 # {SOURCE_NAME} Data Ingestion
 # Source: {URL or description}
+# Prefix: {prefix}_ (e.g., hc_ww_ for Health Canada Wastewater)
 # =============================================================================
 
 library(dplyr)
@@ -256,68 +276,65 @@ if (!file.exists("process.json")) {
 # -----------------------------------------------------------------------------
 # 1. Download raw data
 # -----------------------------------------------------------------------------
-raw_state <- dcf::dcf_download_cdc(
-  "{dataset-id}",
-  "raw",
-  process$raw_state
-)
+# For Health Infobase API:
+api_url <- "https://health-infobase.canada.ca/api/{endpoint}"
+raw_data <- jsonlite::fromJSON(api_url)
+raw_path <- "raw/{source}.csv.gz"
+con <- gzfile(raw_path, "w")
+write.csv(raw_data, con, row.names = FALSE)
+close(con)
+
+current_hash <- tools::md5sum(raw_path)
+raw_state <- list(hash = unname(current_hash))
 
 # Only process if data has changed
 if (!identical(process$raw_state, raw_state)) {
 
   # ---------------------------------------------------------------------------
-  # 2. Load FIPS lookup and read raw data
+  # 2. Load geography lookup and read raw data
   # ---------------------------------------------------------------------------
-  # Load FIPS crosswalk (preferred over cdlTools::fips())
-  all_fips <- vroom::vroom("../../resources/all_fips.csv.gz", show_col_types = FALSE)
+  # Load Canada geography crosswalk
+  all_geo <- read.csv(gzfile("../../resources/all_geo.csv.gz"), colClasses = "character")
 
-  # State-level lookup (for full state names like "California")
-  state_fips_lookup <- all_fips %>%
-    filter(nchar(geography) == 2) %>%
+  # Province-level lookup (for full province names like "Ontario")
+  province_lookup <- all_geo %>%
+    filter(geography != "00") %>%
     select(geography, geography_name)
 
-  data_raw <- vroom::vroom("raw/{dataset-id}.csv.xz", show_col_types = FALSE)
+  data_raw <- read.csv(gzfile(raw_path))
 
   # ---------------------------------------------------------------------------
   # 3. Transform data
   # ---------------------------------------------------------------------------
   data_standard <- data_raw %>%
-    # Filter to relevant subset
-    filter(
-      Type == "Unadjusted Rate",
-      Sex == "Overall",
-      `Race/Ethnicity` == "Overall"
-    ) %>%
-    # Rename to standard columns
-    rename(
-      time = `Week Ending Date`,
-      age = `Age group`,
-      state_name = Site
-    ) %>%
-    # Transform geography using FIPS lookup
-    left_join(state_fips_lookup, by = c("state_name" = "geography_name")) %>%
+    # Map geography using province lookup
+    left_join(province_lookup, by = c("province" = "geography_name")) %>%
     mutate(
       geography = case_when(
-        state_name == "Overall" ~ "00",
+        location == "Canada" ~ "00",
         !is.na(geography) ~ geography,
         TRUE ~ NA_character_
       )
     ) %>%
-    # Format time
+    filter(!is.na(geography)) %>%
+    # Format time (adjust to Saturday end-of-week if needed)
     mutate(
-      time = format(as.Date(time), "%Y-%m-%d")
+      time = format(as.Date(date_col), "%Y-%m-%d")
     ) %>%
-    # Select and order columns
-    select(geography, time, age, value = `Weekly Rate`)
+    # Rename value columns WITH DATA-SPECIFIC PREFIX
+    rename(
+      {prefix}_value = raw_value_col
+    ) %>%
+    # Select standard + prefixed columns
+    select(geography, time, {prefix}_value)
 
   # ---------------------------------------------------------------------------
   # 4. Write standardized output
   # ---------------------------------------------------------------------------
-  vroom::vroom_write(
-    data_standard,
-    "standard/data.csv.gz",
-    delim = ","
-  )
+  out_path <- "standard/data.csv.gz"
+  con <- gzfile(out_path, "w")
+  write.csv(data_standard, con, row.names = FALSE)
+  close(con)
 
   # ---------------------------------------------------------------------------
   # 5. Record processed state
@@ -335,8 +352,8 @@ Each `measure_info.json` file should include variable definitions and a centrali
 
 ```json
 {
-  "variable_name": {
-    "id": "variable_name",
+  "{prefix}_variable_name": {
+    "id": "{prefix}_variable_name",
     "short_name": "Brief description (< 100 chars)",
     "long_name": "Full descriptive name",
     "category": "respiratory|immunization|chronic|injury",
@@ -382,63 +399,51 @@ Every `_sources` entry MUST include:
 - **restrictions**: License and usage restrictions
 
 Special restriction wording:
-- **Epic Cosmos**: "The data can be re-used with appropriate attribution. A suggested citation relating to this data is 'Results of research performed with Epic Cosmos were obtained from the PopHIVE platform (https://github.com/PopHIVE/Ingest).'"
-- **Google Health Trends**: "Data can be reused with attribution of data from the Google Health Trends API, obtained via the PopHIVE platform (https://github.com/PopHIVE/Ingest)."
-- **CDC/CMS data**: "Public domain. CDC data is generally not subject to copyright restrictions."
+- **Health Infobase Canada / PHAC**: "Open Government Licence - Canada. Data may be freely reused with attribution to the Public Health Agency of Canada."
+- **Statistics Canada**: "Open Government Licence - Canada. Data may be freely reused with attribution to Statistics Canada."
 - **Academic publications**: "Attribution required. Cite [full citation]."
 
 ---
 
 ## Common Data Source Patterns
 
-### CDC data.gov (Socrata API)
+### Health Infobase Canada API
 
 ```r
-# Dataset ID is in the URL: data.cdc.gov/d/{dataset-id}
-raw_state <- dcf::dcf_download_cdc("kvib-3txy", "raw", process$raw_state)
-data <- vroom::vroom("raw/kvib-3txy.csv.xz")
+# Health Infobase provides JSON APIs for various datasets
+api_base <- "https://health-infobase.canada.ca/api/"
+url <- paste0(api_base, "{endpoint}/table/{table_name}")
+raw_data <- jsonlite::fromJSON(url)
 ```
 
-### Epic Cosmos SlicerDicer Exports
+### Suppressed Data Handling
 
-Epic data requires special handling for suppression:
+Some Canadian data sources suppress small counts for privacy:
 ```r
 data <- data %>%
   mutate(
     suppressed_flag = if_else(count < 10, 1, 0),
     # Impute suppressed values as halfway between 0 and minimum
-    value = if_else(
+    {prefix}_value = if_else(
       suppressed_flag == 1,
-      min(value[suppressed_flag == 0], na.rm = TRUE) / 2,
-      value
+      min({prefix}_value[suppressed_flag == 0], na.rm = TRUE) / 2,
+      {prefix}_value
     )
   )
 ```
 
-### Google Health Trends API
-
-Requires adjustment for vaccination-related searches:
-```r
-# Adjusted RSV searches (removing vaccine signal)
-data <- data %>%
-  mutate(
-    value_adjusted = rsv_volume - season * 2.72 * vax_volume - 
-                     (1 - season) * 3.41 * vax_volume
-  )
-```
-
-### National Averages from State Data
+### National Averages from Provincial Data
 
 When national totals aren't provided, calculate population-weighted average:
 ```r
-# Load state populations
-state_pop <- read.csv("resources/state_populations.csv")
+# Load province populations
+prov_pop <- read.csv("resources/province_populations.csv")
 
 data_national <- data %>%
-  left_join(state_pop, by = "geography") %>%
+  left_join(prov_pop, by = "geography") %>%
   group_by(time, age) %>%
   summarize(
-    value = weighted.mean(value, population, na.rm = TRUE),
+    {prefix}_value = weighted.mean({prefix}_value, population, na.rm = TRUE),
     .groups = "drop"
   ) %>%
   mutate(geography = "00")
@@ -461,36 +466,19 @@ library(arrow)
 
 # -----------------------------------------------------------------------------
 # 1. Load standardized source files
+# (Each source uses its own prefixed value columns, e.g., hc_ww_value)
 # -----------------------------------------------------------------------------
-epic <- vroom::vroom("../epic/standard/weekly.csv.gz")
-nssp <- vroom::vroom("../nssp/standard/data.csv.gz")
 wastewater <- vroom::vroom("../wastewater/standard/data.csv.gz")
 
 # -----------------------------------------------------------------------------
-# 2. Harmonize and combine
+# 2. Combine (prefixed columns avoid naming collisions)
 # -----------------------------------------------------------------------------
 combined <- bind_rows(
-  epic %>% mutate(source = "epic_cosmos"),
-  nssp %>% mutate(source = "nssp_ed"),
-  wastewater %>% mutate(source = "wastewater")
+  wastewater %>% mutate(source = "hc_wastewater")
 )
 
 # -----------------------------------------------------------------------------
-# 3. Create derived measures
-# -----------------------------------------------------------------------------
-combined <- combined %>%
-  group_by(geography) %>%
-  arrange(time) %>%
-  mutate(
-    # 3-week moving average
-    value_smooth = zoo::rollmean(value, k = 3, fill = NA, align = "right"),
-    # Scale to 0-100
-    value_smooth_scale = scales::rescale(value_smooth, to = c(0, 100))
-  ) %>%
-  ungroup()
-
-# -----------------------------------------------------------------------------
-# 4. Write outputs (parquet only, no CSV)
+# 3. Write outputs (parquet only, no CSV)
 # -----------------------------------------------------------------------------
 arrow::write_parquet(
   combined,
@@ -505,9 +493,9 @@ arrow::write_parquet(
 
 When creating or reviewing ingestion scripts, verify:
 
-- [ ] **Geography**: All values are valid FIPS codes; national = `"00"`
+- [ ] **Geography**: All values are valid SGC codes; national = `"00"`
 - [ ] **Time**: Format is `YYYY-mm-dd`; weekly data uses Saturday
-- [ ] **Column names**: Use standard names (lowercase, underscores)
+- [ ] **Column names**: Use standard names (lowercase, underscores) with data-specific prefix for value columns
 - [ ] **Missing data**: Handled appropriately (NA, not empty strings)
 - [ ] **Suppression**: Flagged with `suppressed_flag` column if imputed
 - [ ] **measure_info.json**: Entry exists for each variable
@@ -519,13 +507,19 @@ When creating or reviewing ingestion scripts, verify:
 
 ## Common Issues and Solutions
 
-### Issue: State names instead of FIPS codes
+### Issue: Province names instead of SGC codes
 
-See the **Geography Standards** section above for the preferred approach using `all_fips.csv.gz`.
+See the **Geography Standards (Canada)** section above for the preferred approach using `all_geo.csv.gz`.
 
 ```r
-# SLOWER Alternative: Use cdlTools only if merge is not feasible
-mutate(geography = cdlTools::fips(state_name, to = "FIPS"))
+# Merge province names to SGC codes
+all_geo <- read.csv(gzfile("../../resources/all_geo.csv.gz"), colClasses = "character")
+province_lookup <- all_geo %>%
+  filter(geography != "00") %>%
+  select(geography, geography_name)
+
+data <- data %>%
+  left_join(province_lookup, by = c("province" = "geography_name"))
 ```
 
 ### Issue: Date in wrong format
@@ -607,60 +601,17 @@ This error occurs when a script works fine when run directly but fails via `dcf_
 - **When running directly**: Interactive sessions may materialize data earlier or have different environment state
 - **When running via dcf_process()**: Scripts run in a cleaner context where Arrow ALTREP stays active, keeping columns as Arrow binary types until an operation forces materialization
 
-The error typically triggers when using `if_else()` with mixed types (e.g., comparing integers with Arrow-backed columns) or when `cdlTools::fips()` returns integers that get mixed with other types.
-
 ```r
-# Problem: cdlTools::fips() with if_else causes Arrow type issues
-mutate(geography = cdlTools::fips(statename, to='FIPS'),
-       geography = if_else(statename=='United States', 0, geography))
-
-# Solution: Use FIPS lookup merge instead (also faster)
-all_fips <- vroom::vroom("../../resources/all_fips.csv.gz", show_col_types = FALSE)
-state_fips_lookup <- all_fips %>%
-  filter(nchar(geography) == 2) %>%
-  select(geography, geography_name)
+# Solution: Use geography lookup merge (avoids Arrow type issues)
+all_geo <- read.csv(gzfile("../../resources/all_geo.csv.gz"), colClasses = "character")
 
 data <- data %>%
-  left_join(state_fips_lookup, by = c("statename" = "geography_name")) %>%
-  mutate(geography = if_else(statename == 'United States', "00", geography))
+  left_join(all_geo, by = c("province" = "geography_name")) %>%
+  mutate(geography = if_else(location == 'Canada', "00", geography))
 
 # Alternative: Disable Arrow ALTREP (less preferred)
 data <- vroom::vroom("file.csv.xz", show_col_types = FALSE, altrep = FALSE)
 ```
-
-### Issue: Connecticut county FIPS codes not matching
-
-Connecticut abolished its 8 counties in 2022 and replaced them with 9 planning regions as county-equivalents. This means:
-
-- **Old FIPS codes (pre-2022)**: `09001`-`09015` (8 counties: Fairfield, Hartford, Litchfield, etc.)
-- **New FIPS codes (2022+)**: `09110`-`09190` (9 planning regions: Capitol, Greater Bridgeport, etc.)
-
-The Census 2021 data uses old codes, while newer datasets (2022+) use new codes. Both sets are included in `resources/all_fips.csv.gz`.
-
-```r
-# For datasets using new CT planning region codes, load supplemental population data:
-ct_pop <- vroom::vroom("../../resources/ct_planning_regions_pop_under5.csv.gz",
-                        show_col_types = FALSE)
-
-# Combine with standard county population data
-pop_county <- bind_rows(pop_county, ct_pop)
-```
-
-**Resource files:**
-- `resources/all_fips.csv.gz` - Contains both old (09001-09015) and new (09110-09190) CT codes
-- `resources/ct_planning_regions_pop_under5.csv.gz` - Population under 5 years for CT planning regions (source: 2022 ACS 1-year estimates)
-
-| New FIPS | Planning Region |
-|----------|-----------------|
-| 09110 | Capitol |
-| 09120 | Greater Bridgeport |
-| 09130 | Lower Connecticut River Valley |
-| 09140 | Naugatuck Valley |
-| 09150 | Northeastern Connecticut |
-| 09160 | Northwest Hills |
-| 09170 | South Central Connecticut |
-| 09180 | Southeastern Connecticut |
-| 09190 | Western Connecticut |
 
 ---
 
