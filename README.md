@@ -1,4 +1,7 @@
 # PopHIVE Canada: Same great data, with a cool northern chill
+## Data dictionary and documentation
+
+https://pophive.github.io/Ingest_canada/
 
 ## Using these data
 
