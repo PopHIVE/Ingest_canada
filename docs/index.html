@@ -51,7 +51,94 @@
             <hr/>
             <section id="hc-opioids" class="mb-5">
               <h2 class="border-bottom pb-2">HC Opioids</h2>
-              <p class="text-muted">No standard data files found.</p>
+              <p class="lead">National surveillance data on opioid- and stimulant-related harms in Canada, compiled by the Public Health Agency of Canada (PHAC) from provincial and territorial reports. Includes four outcome measures: apparent opioid toxicity deaths, opioid-related poisoning hospitalizations, opioid-related emergency department visits, and suspected opioid-related overdose EMS responses. Data is reported quarterly from 2016 onward. Geographic coverage varies by outcome measure, and recent quarters may contain preliminary data subject to revision.</p>
+              <h5>Sources</h5>
+              <ul class="list-unstyled">
+                <li>
+                  <a href="https://health-infobase.canada.ca/substance-related-harms/opioids-stimulants/" target="_blank">Data Source</a>
+                   | 
+                  <a href="https://www.canada.ca/en/public-health.html" target="_blank">Public Health Agency of Canada</a>
+                   | 
+                  <a href="https://health-infobase.canada.ca/api/opioids" target="_blank">API/Data Location</a>
+                </li>
+              </ul>
+              <div class="alert alert-warning">
+                <strong>Restrictions: </strong>
+                Open Government Licence - Canada. Data may be freely reused with attribution to the Public Health Agency of Canada.
+              </div>
+              <h4 class="mt-4">Variables</h4>
+              <h5 class="mt-3">
+                <code>data.csv.gz</code>
+              </h5>
+              <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                  <thead>
+                    <tr>
+                      <th>Variable</th>
+                      <th>Short Name</th>
+                      <th>Description</th>
+                      <th>Type</th>
+                      <th>Unit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <code>geography</code>
+                      </td>
+                      <td>Geography</td>
+                      <td>SGC code identifier (00 = national/Canada, 2-digit = province/territory)</td>
+                      <td>identifier</td>
+                      <td>SGC code</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>time</code>
+                      </td>
+                      <td>Time</td>
+                      <td>Date in YYYY-mm-dd format (ISO 8601; Saturday for weekly data)</td>
+                      <td>date</td>
+                      <td>date</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_op_deaths</code>
+                      </td>
+                      <td>Opioid toxicity deaths</td>
+                      <td>Quarterly count of apparent opioid toxicity deaths by province/territory.</td>
+                      <td>Count</td>
+                      <td>Deaths</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_op_hosp</code>
+                      </td>
+                      <td>Opioid poisoning hospitalizations</td>
+                      <td>Quarterly count of opioid-related poisoning hospitalizations by province/territory.</td>
+                      <td>Count</td>
+                      <td>Hospitalizations</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_op_ed</code>
+                      </td>
+                      <td>Opioid poisoning ED visits</td>
+                      <td>Quarterly count of opioid-related poisoning emergency department visits by province/territory.</td>
+                      <td>Count</td>
+                      <td>ED visits</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <code>hc_op_ems</code>
+                      </td>
+                      <td>Opioid overdose EMS responses</td>
+                      <td>Quarterly count of suspected opioid-related overdose EMS responses by province/territory.</td>
+                      <td>Count</td>
+                      <td>EMS responses</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
             <section id="wastewater" class="mb-5">
               <h2 class="border-bottom pb-2">Wastewater</h2>
