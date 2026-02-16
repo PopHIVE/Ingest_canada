@@ -1,0 +1,22 @@
+{
+  "name": "cnisp_vri",
+  "type": "source",
+  "scripts": [
+    {
+      "path": "ingest.R",
+      "manual": false,
+      "frequency": 0,
+      "last_run": "",
+      "run_time": "",
+      "last_status": {
+        "log": "",
+        "success": true
+      }
+    }
+  ],
+  "checked": "",
+  "check_results": [],
+  "raw_state": {
+    "hashes": ["467216533d69e20092196afa8b7c3c8e", "3fc4f912be50d7924c305849069d6d9a", "43698425186bad822a87e0a8a1b8b66d"]
+  }
+}

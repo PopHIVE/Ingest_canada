@@ -1,0 +1,215 @@
+{
+  "hc_vri_covid": {
+    "id": "hc_vri_covid",
+    "short_name": "COVID-19 hospitalization rate",
+    "long_name": "COVID-19 hospitalization rate per 1,000 patient admissions (CNISP)",
+    "category": "respiratory",
+    "short_description": "Weekly rate of hospitalized patients with confirmed COVID-19 per 1,000 admissions in CNISP hospitals.",
+    "long_description": "Weekly incidence rate of hospitalized patients with laboratory-confirmed COVID-19 per 1,000 patient admissions, reported by approximately 70 acute care hospitals participating in the Canadian Nosocomial Infection Surveillance Program (CNISP). Rates are stratified by age group (Adult, Pediatric, Overall). Data available from March 2020 onward.",
+    "statement": "The COVID-19 hospitalization rate was {hc_vri_covid} per 1,000 admissions in CNISP hospitals.",
+    "measure_type": "Rate",
+    "unit": "Per 1,000 patient admissions",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "hc_vri_flu_a": {
+    "id": "hc_vri_flu_a",
+    "short_name": "Influenza A hospitalization rate",
+    "long_name": "Influenza A hospitalization rate per 1,000 patient admissions (CNISP)",
+    "category": "respiratory",
+    "short_description": "Weekly rate of hospitalized patients with confirmed Influenza A per 1,000 admissions in CNISP hospitals.",
+    "long_description": "Weekly incidence rate of hospitalized patients with laboratory-confirmed Influenza A per 1,000 patient admissions, reported by approximately 60 acute care hospitals participating in the Canadian Nosocomial Infection Surveillance Program (CNISP). Rates are stratified by age group (Adult, Pediatric, Overall). Influenza surveillance data may come from a smaller subset of CNISP hospitals compared to COVID-19.",
+    "statement": "The Influenza A hospitalization rate was {hc_vri_flu_a} per 1,000 admissions in CNISP hospitals.",
+    "measure_type": "Rate",
+    "unit": "Per 1,000 patient admissions",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "hc_vri_flu_b": {
+    "id": "hc_vri_flu_b",
+    "short_name": "Influenza B hospitalization rate",
+    "long_name": "Influenza B hospitalization rate per 1,000 patient admissions (CNISP)",
+    "category": "respiratory",
+    "short_description": "Weekly rate of hospitalized patients with confirmed Influenza B per 1,000 admissions in CNISP hospitals.",
+    "long_description": "Weekly incidence rate of hospitalized patients with laboratory-confirmed Influenza B per 1,000 patient admissions, reported by approximately 60 acute care hospitals participating in the Canadian Nosocomial Infection Surveillance Program (CNISP). Rates are stratified by age group (Adult, Pediatric, Overall). Influenza surveillance data may come from a smaller subset of CNISP hospitals compared to COVID-19.",
+    "statement": "The Influenza B hospitalization rate was {hc_vri_flu_b} per 1,000 admissions in CNISP hospitals.",
+    "measure_type": "Rate",
+    "unit": "Per 1,000 patient admissions",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "hc_vri_rsv": {
+    "id": "hc_vri_rsv",
+    "short_name": "RSV hospitalization rate",
+    "long_name": "RSV hospitalization rate per 1,000 patient admissions (CNISP)",
+    "category": "respiratory",
+    "short_description": "Weekly rate of hospitalized patients with confirmed RSV per 1,000 admissions in CNISP hospitals.",
+    "long_description": "Weekly incidence rate of hospitalized patients with laboratory-confirmed respiratory syncytial virus (RSV) per 1,000 patient admissions, reported by approximately 60 acute care hospitals participating in the Canadian Nosocomial Infection Surveillance Program (CNISP). Rates are stratified by age group (Adult, Pediatric, Overall). RSV surveillance data may come from a smaller subset of CNISP hospitals compared to COVID-19.",
+    "statement": "The RSV hospitalization rate was {hc_vri_rsv} per 1,000 admissions in CNISP hospitals.",
+    "measure_type": "Rate",
+    "unit": "Per 1,000 patient admissions",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "hc_vri_covid_icu": {
+    "id": "hc_vri_covid_icu",
+    "short_name": "COVID-19 ICU admission rate",
+    "long_name": "COVID-19 ICU admission rate per 1,000 patient admissions (CNISP)",
+    "category": "respiratory",
+    "short_description": "Weekly rate of ICU admissions for COVID-19 per 1,000 admissions in CNISP hospitals.",
+    "long_description": "Weekly rate of intensive care unit (ICU) admissions among hospitalized patients with laboratory-confirmed COVID-19 per 1,000 patient admissions, reported by CNISP hospitals. Rates are stratified by age group (Adult, Pediatric, Overall).",
+    "statement": "The COVID-19 ICU admission rate was {hc_vri_covid_icu} per 1,000 admissions in CNISP hospitals.",
+    "measure_type": "Rate",
+    "unit": "Per 1,000 patient admissions",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "hc_vri_covid_deaths": {
+    "id": "hc_vri_covid_deaths",
+    "short_name": "COVID-19 in-hospital death rate",
+    "long_name": "COVID-19 in-hospital death rate per 1,000 patient admissions (CNISP)",
+    "category": "respiratory",
+    "short_description": "Weekly rate of in-hospital deaths from COVID-19 per 1,000 admissions in CNISP hospitals.",
+    "long_description": "Weekly rate of in-hospital deaths among hospitalized patients with laboratory-confirmed COVID-19 per 1,000 patient admissions, reported by CNISP hospitals. Rates are stratified by age group (Adult, Pediatric, Overall).",
+    "statement": "The COVID-19 in-hospital death rate was {hc_vri_covid_deaths} per 1,000 admissions in CNISP hospitals.",
+    "measure_type": "Rate",
+    "unit": "Per 1,000 patient admissions",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "hc_vri_outbreaks_covid": {
+    "id": "hc_vri_outbreaks_covid",
+    "short_name": "COVID-19 hospital outbreaks",
+    "long_name": "Weekly new COVID-19 outbreaks in CNISP hospitals",
+    "category": "respiratory",
+    "short_description": "Weekly count of new laboratory-confirmed COVID-19 outbreaks in CNISP hospitals.",
+    "long_description": "Weekly number of new laboratory-confirmed COVID-19 outbreaks reported by participating CNISP hospitals. Outbreak definitions may vary across hospitals. Outbreak reporting began in January 2024.",
+    "statement": "There were {hc_vri_outbreaks_covid} new COVID-19 outbreaks reported by CNISP hospitals.",
+    "measure_type": "Count",
+    "unit": "Outbreaks",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "hc_vri_outbreaks_flu_a": {
+    "id": "hc_vri_outbreaks_flu_a",
+    "short_name": "Influenza A hospital outbreaks",
+    "long_name": "Weekly new Influenza A outbreaks in CNISP hospitals",
+    "category": "respiratory",
+    "short_description": "Weekly count of new laboratory-confirmed Influenza A outbreaks in CNISP hospitals.",
+    "long_description": "Weekly number of new laboratory-confirmed Influenza A outbreaks reported by participating CNISP hospitals. Outbreak definitions may vary across hospitals. Outbreak reporting began in January 2024.",
+    "statement": "There were {hc_vri_outbreaks_flu_a} new Influenza A outbreaks reported by CNISP hospitals.",
+    "measure_type": "Count",
+    "unit": "Outbreaks",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "hc_vri_outbreaks_flu_b": {
+    "id": "hc_vri_outbreaks_flu_b",
+    "short_name": "Influenza B hospital outbreaks",
+    "long_name": "Weekly new Influenza B outbreaks in CNISP hospitals",
+    "category": "respiratory",
+    "short_description": "Weekly count of new laboratory-confirmed Influenza B outbreaks in CNISP hospitals.",
+    "long_description": "Weekly number of new laboratory-confirmed Influenza B outbreaks reported by participating CNISP hospitals. Outbreak definitions may vary across hospitals. Outbreak reporting began in January 2024.",
+    "statement": "There were {hc_vri_outbreaks_flu_b} new Influenza B outbreaks reported by CNISP hospitals.",
+    "measure_type": "Count",
+    "unit": "Outbreaks",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "hc_vri_outbreaks_rsv": {
+    "id": "hc_vri_outbreaks_rsv",
+    "short_name": "RSV hospital outbreaks",
+    "long_name": "Weekly new RSV outbreaks in CNISP hospitals",
+    "category": "respiratory",
+    "short_description": "Weekly count of new laboratory-confirmed RSV outbreaks in CNISP hospitals.",
+    "long_description": "Weekly number of new laboratory-confirmed RSV outbreaks reported by participating CNISP hospitals. Outbreak definitions may vary across hospitals. Outbreak reporting began in January 2024.",
+    "statement": "There were {hc_vri_outbreaks_rsv} new RSV outbreaks reported by CNISP hospitals.",
+    "measure_type": "Count",
+    "unit": "Outbreaks",
+    "time_resolution": "Week",
+    "sources": [{ "id": "cnisp_vri" }],
+    "citations": [
+      {
+        "title": "Viral respiratory infections: The Canadian Nosocomial Infection Surveillance Program (CNISP)",
+        "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html"
+      }
+    ]
+  },
+
+  "_sources": {
+    "cnisp_vri": {
+      "name": "Health Infobase Canada - CNISP Viral Respiratory Infections",
+      "url": "https://health-infobase.canada.ca/cnisp/viral-respiratory-infections.html",
+      "organization": "Public Health Agency of Canada",
+      "organization_url": "https://www.canada.ca/en/public-health.html",
+      "location": "CNISP-VRI API",
+      "location_url": "https://health-infobase.canada.ca/api/cnisp-vri",
+      "description": "The Canadian Nosocomial Infection Surveillance Program (CNISP) tracks viral respiratory infections (VRI) among hospitalized patients in approximately 70 acute care hospitals across ten provinces and one territory. Data includes weekly hospitalization rates per 1,000 patient admissions for COVID-19, Influenza A, Influenza B, and RSV, stratified by age group (Adult, Pediatric, Overall). Additional COVID-19 metrics include ICU admission and in-hospital death rates. Hospital outbreak counts are also reported weekly starting January 2024. The number of reporting hospitals may differ by virus (approximately 60 for Influenza and RSV) and by metric (approximately 55 for age-stratified data).",
+      "restrictions": "Open Government Licence - Canada. Data may be freely reused with attribution to the Public Health Agency of Canada.",
+      "date_accessed": 2026
+    }
+  }
+}
